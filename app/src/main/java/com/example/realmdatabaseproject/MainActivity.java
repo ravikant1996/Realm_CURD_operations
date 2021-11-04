@@ -1,12 +1,7 @@
 package com.example.realmdatabaseproject;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,10 +9,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.realmdatabaseproject.databinding.ActivityMainBinding;
+import com.example.realmdatabaseproject.databinding.DeleteDataBinding;
 
 import java.util.List;
-import java.util.Locale;
 
 import io.realm.Realm;
 
@@ -76,23 +75,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void updateData() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View view = getLayoutInflater().inflate(R.layout.delete_data, null);
-        builder.setView(view);
+//        View view = getLayoutInflater().inflate(R.layout.delete_data, null);
+//        builder.setView(view);
 
-        EditText id = view.findViewById(R.id.id);
-        Button button = view.findViewById(R.id.delete);
-        button.setText("update");
+        DeleteDataBinding deleteDataBinding= DeleteDataBinding.inflate(getLayoutInflater());
+        builder.setView(deleteDataBinding.getRoot());
+
+//
+//        EditText id = view.findViewById(R.id.id);
+//        Button button = view.findViewById(R.id.delete);
+//        button.setText("update");
+        deleteDataBinding.delete.setText("update");
 
         AlertDialog alertDialog = builder.show();
 
-        button.setOnClickListener(new View.OnClickListener() {
+        deleteDataBinding.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (id.getText().toString().trim().equals("")) {
+                if (deleteDataBinding.id.getText().toString().trim().equals("")) {
                     return;
                 }
                 alertDialog.dismiss();
-                long _id = Long.parseLong(id.getText().toString().trim());
+                long _id = Long.parseLong(deleteDataBinding.id.getText().toString().trim());
                 final DataModel dataModel = realm.where(DataModel.class).equalTo("id", _id).findFirst();
                 if (dataModel != null) {
                     showInsertDialogBox(dataModel);
@@ -150,21 +154,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void deleteData() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View view = getLayoutInflater().inflate(R.layout.delete_data, null);
-        builder.setView(view);
+//        View view = getLayoutInflater().inflate(R.layout.delete_data, null);
+//        builder.setView(view);
 
-        EditText id = view.findViewById(R.id.id);
-        Button button = view.findViewById(R.id.delete);
+        DeleteDataBinding deleteDataBinding= DeleteDataBinding.inflate(getLayoutInflater());
+        builder.setView(deleteDataBinding.getRoot());
+
+//        EditText id = view.findViewById(R.id.id);
+//        Button button = view.findViewById(R.id.delete);
 
         AlertDialog alertDialog = builder.show();
 
-        button.setOnClickListener(new View.OnClickListener() {
+        deleteDataBinding.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (id.getText().toString().trim().equals("")) {
+                if (deleteDataBinding.id.getText().toString().trim().equals("")) {
                     return;
                 }
-                long _id = Long.parseLong(id.getText().toString().trim());
+                long _id = Long.parseLong(deleteDataBinding.id.getText().toString().trim());
                 final DataModel dataModel = realm.where(DataModel.class).equalTo("id", _id).findFirst();
                 realm.executeTransaction(new Realm.Transaction() {
                     @Override
