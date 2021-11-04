@@ -12,7 +12,7 @@ binding = ActivityMainBinding.inflate(getLayoutInflater());
 <!-- dialog box binding -->
 **AlertDialog.Builder builder = new AlertDialog.Builder(this);
 DialogBinding dialogBinding= DialogBinding.inflate(getLayoutInflater());
-builder.setView(deleteDataBinding.getRoot()); **   
+builder.setView(dialogBinding.getRoot()); **   
 
 **dialogBinding.name.setText("RaviKant");
 AlertDialog alertDialog = builder.show();
