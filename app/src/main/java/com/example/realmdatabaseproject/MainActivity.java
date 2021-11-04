@@ -14,6 +14,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.realmdatabaseproject.databinding.ActivityMainBinding;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -21,6 +23,7 @@ import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    ActivityMainBinding binding;
 
     Button insert, update, read, delete;
     TextView showText;
@@ -29,20 +32,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+//        setContentView(R.layout.activity_main);
 
-        insert = findViewById(R.id.insert);
-        update = findViewById(R.id.update);
-        read = findViewById(R.id.read);
-        delete = findViewById(R.id.delete);
-        showText = findViewById(R.id.showText);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+
+
+//        insert = findViewById(R.id.insert);
+//        update = findViewById(R.id.update);
+//        read = findViewById(R.id.read);
+//        delete = findViewById(R.id.delete);
+//        showText = findViewById(R.id.showText);
 
         realm = Realm.getDefaultInstance();
 
-        insert.setOnClickListener(this);
-        update.setOnClickListener(this);
-        delete.setOnClickListener(this);
-        read.setOnClickListener(this);
+        binding.insert.setOnClickListener(this);
+        binding.update.setOnClickListener(this);
+        binding.delete.setOnClickListener(this);
+        binding.read.setOnClickListener(this);
 
     }
 
@@ -86,9 +94,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 alertDialog.dismiss();
                 long _id = Long.parseLong(id.getText().toString().trim());
                 final DataModel dataModel = realm.where(DataModel.class).equalTo("id", _id).findFirst();
-                if (dataModel!=null) {
+                if (dataModel != null) {
                     showInsertDialogBox(dataModel);
-                }else {
+                } else {
                     Toast.makeText(MainActivity.this, "Not exist", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -218,6 +226,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void showData() {
         List<DataModel> dataModels = realm.where(DataModel.class).findAll();
-        showText.setText(dataModels + "");
+        binding.showText.setText(dataModels + "");
     }
 }
